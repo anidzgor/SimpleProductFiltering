@@ -1,6 +1,6 @@
 # Simple product filtering
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[App on netfliy](https://simple-product-filtering.netlify.app)
 
 ### `yarn start`
 
