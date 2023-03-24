@@ -1,48 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SearchBar from './SearchBar';
 import ProductTable from './ProductTable';
 
-class FilterableProductTable extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { filterText: '', inStockOnly: false };
+function FilterableProductTable({ products }) {
 
-        this.handleInputTextChange = this.handleInputTextChange.bind(this);
-        this.handleStockCheckBoxChange = this.handleStockCheckBoxChange.bind(this);
+    const [text, setText] = useState('');
+    const [inStockOnly, setInStockOnly] = useState(false);
+
+    function handleInputTextChange(text) {
+        setText(text);
     }
 
-    handleInputTextChange(text) {
-        this.setState(
-            {
-                filterText: text
-            }
-        );
+    function handleStockCheckBoxChange(checked) {
+        setInStockOnly(checked);
     }
 
-    handleStockCheckBoxChange(checked) {
-        this.setState(
-            {
-                inStockOnly: checked
-            }
-        );
+    let productsFiltered = products.filter(product => product.name.toLowerCase().startsWith(text.toLowerCase()));
+    if (inStockOnly) {
+        productsFiltered = productsFiltered.filter(product => product.stocked === true);
     }
 
-    render() {
-        let products = this.props.products.filter(product => product.name.toLowerCase().startsWith(this.state.filterText));
-        if (this.state.inStockOnly) {
-            products = products.filter(product => product.stocked === true);
-        }
-
-        return (
-            <>
-                <SearchBar
-                    handleInputTextChange={this.handleInputTextChange}
-                    handleStockCheckBoxChange={this.handleStockCheckBoxChange}
-                />
-                <ProductTable products={products} />
-            </>
-        );
-    }
+    return (
+        <>
+            <SearchBar
+                onInputTextChange={handleInputTextChange}
+                onStockCheckBoxChange={handleStockCheckBoxChange}
+            />
+            <ProductTable products={productsFiltered} />
+        </>
+    );
 }
 
 export default FilterableProductTable;

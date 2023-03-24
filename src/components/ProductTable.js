@@ -2,9 +2,9 @@ import Table from 'react-bootstrap/Table';
 import ProductCategoryRow from './ProductCategoryRow';
 import ProductRow from './ProductRow';
 
-function ProductTable(props) {
+function ProductTable({products}) {
 
-    const categories = [...new Set(props.products.map(product => product.category))];
+    const categories = [...new Set(products.map(product => product.category))];
 
     return (
         <Table striped bordered hover size="sm">
@@ -17,11 +17,11 @@ function ProductTable(props) {
             {categories.map((category, index) => {
                 return (
                     <tbody key={index}>
-                        <ProductCategoryRow key={index} category={category} />
-                        {props.products.map((product, index) => {
+                        <ProductCategoryRow key={category} category={category} />
+                        {products.map((product, index) => {
                             return (
                                 product.category === category &&
-                                <ProductRow key={index} name={product.name} price={product.price} />
+                                <ProductRow key={index} product={product} />
                             )
                         })}
                     </tbody>
